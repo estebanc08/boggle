@@ -3,12 +3,15 @@
 #include <random>
 #include <algorithm>
 #include <fstream>
+#include <set>
+#include <string>
+#include <map>
 #include "trie.hpp"
 #define DIMENSION 5
 
 using namespace std;
 
-void solveBoard(vector<vector<char>> &board, vector<string> &words, string word, Trie &list, int x = 0, int y = 0);
+void solveBoard(vector<vector<char>> &board, map<int, set<string>> &words, string word, Trie &list, int x = 0, int y = 0);
 
 vector<vector<char>> generateBoard();
 
