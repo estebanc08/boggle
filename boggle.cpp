@@ -1,6 +1,6 @@
 #include "boggle.hpp"
 
-int main(int argc, char* argv[]) {
+int main() {
     Trie wordList = readWords();
     vector<vector<char>> board = generateBoard();
     printBoard(board);
@@ -22,37 +22,17 @@ void solveBoard(vector<vector<char>>& board, vector<string>& words, string word,
         words.push_back(word);
     }
     board[y][x] = '0';
-    // ONE DIRECTION 
-    if(y - 1 >= 0 && board[y-1][x] != '0' && list.startsWith(word)){
-        solveBoard(board, words, word, list, x, y-1);
+    
+
+    for (const auto& dir : directions) {
+        int newX = x + dir.second;
+        int newY = y + dir.first;
+
+        if (newX >= 0 && newX < DIMENSION && newY >= 0 && newY < DIMENSION && board[newY][newX] != '0' && list.startsWith(word)) {
+            solveBoard(board, words, word, list, newX, newY);
+        }
     }
-    if(y + 1 < DIMENSION && board[y+1][x] != '0' && list.startsWith(word)){
-        solveBoard(board, words, word, list, x, y+1);
-    }
-    if(x - 1 >= 0 && board[y][x-1] != '0' && list.startsWith(word)){
-        solveBoard(board, words, word, list, x-1, y);
-    }
-    if(x + 1 < DIMENSION && board[y][x+1] != '0' && list.startsWith(word)){
-        solveBoard(board, words, word, list, x+1, y);
-    }
-     
-    // DIAGONALS
-    // UP AND LEFT
-    if(y - 1 >= 0 && x - 1 >= 0 && board[y-1][x-1] != '0' && list.startsWith(word)){
-        solveBoard(board, words, word, list, x-1, y-1);
-    }
-    // UP AND RIGHT
-    if(y - 1 >= 0 && x + 1 < DIMENSION && board[y-1][x+1] != '0' && list.startsWith(word)){
-        solveBoard(board, words, word, list, x+1, y-1);
-    }
-    // DOWN AND LEFT
-    if(y + 1 < DIMENSION && x - 1 >= 0 && board[y+1][x-1] != '0' && list.startsWith(word)){
-        solveBoard(board, words, word, list, x-1, y+1);
-    }
-    // DOWN AND RIGHT
-    if(y + 1 < DIMENSION && x + 1 < DIMENSION && board[y+1][x+1] != '0' && list.startsWith(word)){
-        solveBoard(board, words, word, list, x+1, y+1);
-    }
+
     word.pop_back();
     board[y][x] = curr;
 }
@@ -93,8 +73,7 @@ vector<vector<char>> generateBoard() {
             uniform_int_distribution<> sides(0, 5);
             int side = sides(gen);
             board[i][j] = dice25[die[val]][side];
-            swap(die[val], die[size]);
-            size--;
+            swap(die[val], die[--size]);
         }
     }
     return board;
