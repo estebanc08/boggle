@@ -76,12 +76,12 @@ vector<vector<char>> generateBoard() {
     
     for (int i = 0; i < DIMENSION; ++i) {
         for (int j = 0; j < DIMENSION; ++j) {
-            uniform_int_distribution<> dis(0, size);
+            uniform_int_distribution<> dis(0, --size);
             int val = dis(gen);
             uniform_int_distribution<> sides(0, 5);
             int side = sides(gen);
             board[i][j] = dice25[die[val]][side];
-            swap(die[val], die[--size]);
+            swap(die[val], die[size]);
         }
     }
     return board;

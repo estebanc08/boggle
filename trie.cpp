@@ -18,7 +18,10 @@ Trie::Trie()
 void Trie::insert(const std::string& word) {
     TrieNode* curr = root;
     for (char c : word) {
-        int index = c - 'A';
+        if(isalpha(c) == 0) {
+            return;
+        }
+        int index = toupper(c) - 'A';
         if (curr->children[index] == nullptr) {
             curr->children[index] = new TrieNode();
         }
